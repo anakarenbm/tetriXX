@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.image.ImageObserver;
 import java.io.Serializable;
 import java.net.URL;
 
@@ -321,7 +320,7 @@ public class BoardPanel extends JPanel implements Serializable  {
         
         
     
-    public int[][] getState() {
+    public int[][] getMatrix() {
         int State[][] = new int[tiles.length][tiles[0].length];
 
         for (int iI = 0; iI < tiles.length; iI++) {
@@ -337,7 +336,7 @@ public class BoardPanel extends JPanel implements Serializable  {
         return State;
     }
     
-    public void setState(int[][] State){
+    public void setMatrix(int[][] State){
             
             tiles = new TileType [State.length][State[0].length];
             

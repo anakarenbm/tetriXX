@@ -1,10 +1,10 @@
-
-
 import java.awt.Color;
 
 /**
- * The {@code PieceType} enum describes the properties of the various pieces that can be used in the game.
- * @author Brendan Jones
+ * The {@code PieceType} enum describes the properties of the various pieces 
+ *      that can be used in the game.
+ * @authors Sergio Diaz          A01192313
+ *         Ana Karen Beltran    A01192508
  *
  */
 public enum TileType {
@@ -216,31 +216,31 @@ public enum TileType {
 	/**
 	 * The column that this type spawns in.
 	 */
-	public int spawnCol;
+	public int iSpawnCol;
 	
 	/**
 	 * The row that this type spawns in.
 	 */
-	private int spawnRow;
+	private int iSpawnRow;
 	
 	/**
 	 * The dimensions of the array for this piece.
 	 */
-	public int dimension;
+	public int iDimension;
 	
 	/**
 	 * The number of rows in this piece. (Only valid when rotation is 0 or 2,
 	 * but it's fine since we're only using it for displaying the next piece
 	 * preview, which uses rotation 0).
 	 */
-	public int rows;
+	public int iRows;
 	
 	/**
 	 * The number of columns in this piece. (Only valid when rotation is 0 or 2,
 	 * but it's fine since we're only using it for displaying the next piece
 	 * preview, which uses rotation 0).
 	 */
-	public int cols;
+	public int iCols;
 	
 	/**
 	 * The tiles for this piece. Each piece has an array of tiles for each rotation.
@@ -262,13 +262,13 @@ public enum TileType {
 		this.baseColor = color;
 		this.lightColor = color.brighter();
 		this.darkColor = color.darker();
-		this.dimension = dimension;
+		this.iDimension = dimension;
 		this.tiles = tiles;
-		this.cols = cols;
-		this.rows = rows;
+		this.iCols = cols;
+		this.iRows = rows;
 		this.iType = iType;
-		this.spawnCol = 5 - (dimension >> 1);
-		this.spawnRow = getTopInset(0);
+		this.iSpawnCol = 5 - (dimension >> 1);
+		this.iSpawnRow = getTopInset(0);
                 
                 
                 
@@ -303,7 +303,7 @@ public enum TileType {
 	 * @return The dimension.
 	 */
 	public int getDimension() {
-		return dimension;
+		return iDimension;
 	}
 	
 	/**
@@ -311,7 +311,7 @@ public enum TileType {
 	 * @return The spawn column.
 	 */
 	public int getSpawnColumn() {
-		return spawnCol;
+		return iSpawnCol;
 	}
 	
 	/**
@@ -319,7 +319,7 @@ public enum TileType {
 	 * @return The spawn row.
 	 */
 	public int getSpawnRow() {
-		return spawnRow;
+		return iSpawnRow;
 	}
 	
 	/**
@@ -328,7 +328,7 @@ public enum TileType {
 	 * @return The number of rows.
 	 */
 	public int getRows() {
-		return rows;
+		return iRows;
 	}
 	
 	/**
@@ -337,7 +337,7 @@ public enum TileType {
 	 * @return The number of columns.
 	 */
 	public int getCols() {
-		return cols;
+		return iCols;
 	}
 	
         public int getType() {
@@ -352,7 +352,7 @@ public enum TileType {
 	 * @return Whether or not a tile resides there.
 	 */
 	public boolean isTile(int x, int y, int rotation) {
-		return tiles[rotation][y * dimension + x];
+		return tiles[rotation][y * iDimension + x];
 	}
 	
 	/**
@@ -366,8 +366,8 @@ public enum TileType {
 		 * Loop through from left to right until we find a tile then return
 		 * the column.
 		 */
-		for(int x = 0; x < dimension; x++) {
-			for(int y = 0; y < dimension; y++) {
+		for(int x = 0; x < iDimension; x++) {
+			for(int y = 0; y < iDimension; y++) {
 				if(isTile(x, y, rotation)) {
 					return x;
 				}
@@ -387,10 +387,10 @@ public enum TileType {
 		 * Loop through from right to left until we find a tile then return
 		 * the column.
 		 */
-		for(int x = dimension - 1; x >= 0; x--) {
-			for(int y = 0; y < dimension; y++) {
+		for(int x = iDimension - 1; x >= 0; x--) {
+			for(int y = 0; y < iDimension; y++) {
 				if(isTile(x, y, rotation)) {
-					return dimension - x;
+					return iDimension - x;
 				}
 			}
 		}
@@ -408,8 +408,8 @@ public enum TileType {
 		 * Loop through from top to bottom until we find a tile then return
 		 * the row.
 		 */
-		for(int y = 0; y < dimension; y++) {
-			for(int x = 0; x < dimension; x++) {
+		for(int y = 0; y < iDimension; y++) {
+			for(int x = 0; x < iDimension; x++) {
 				if(isTile(x, y, rotation)) {
 					return y;
 				}
@@ -429,14 +429,13 @@ public enum TileType {
 		 * Loop through from bottom to top until we find a tile then return
 		 * the row.
 		 */
-		for(int y = dimension - 1; y >= 0; y--) {
-			for(int x = 0; x < dimension; x++) {
+		for(int y = iDimension - 1; y >= 0; y--) {
+			for(int x = 0; x < iDimension; x++) {
 				if(isTile(x, y, rotation)) {
-					return dimension - y;
+					return iDimension - y;
 				}
 			}
 		}
 		return -1;
 	}
-	
 }
