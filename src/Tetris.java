@@ -373,14 +373,6 @@ public class Tetris extends JFrame implements Serializable {
         this.gameSpeed = 1.0f;
         
         
-        
-        
-        
-       
-        
-        
-        
-
         /*
 	 * Setup the timer to keep the game from running before the user presses enter
 	 * to start it.
@@ -391,10 +383,6 @@ public class Tetris extends JFrame implements Serializable {
         while (true) {
             //Get the time that the frame started.
             long start = System.nanoTime();
-
-            
-            
-            System.out.println(iCounterAddedPiece);
             
             if (iCounterAddedPiece <= 50) {
                
