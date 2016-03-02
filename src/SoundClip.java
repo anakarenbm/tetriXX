@@ -1,6 +1,3 @@
-
-
-
 /**
  * Clase SoundClip
  *
@@ -20,8 +17,8 @@ public class SoundClip implements Serializable {
 
     private AudioInputStream sample;
     private Clip clip;
-    private boolean looping = false;
-    private int repeat = 0;
+    private boolean bLooping = false;
+    private int iRepeat = 0;
     private String filename = "";
 
     /**
@@ -64,7 +61,7 @@ public class SoundClip implements Serializable {
      * @param _looping es un valor <code>boleano</code>.
      */
     public void setLooping(boolean looping) {
-        this.looping = looping;
+        this.bLooping = looping;
     }
 
     /**
@@ -73,7 +70,7 @@ public class SoundClip implements Serializable {
      * @return looping es un valor <code>boleano</code>.
      */
     public boolean getLooping() {
-        return looping;
+        return bLooping;
     }
 
     /**
@@ -83,7 +80,7 @@ public class SoundClip implements Serializable {
      * repeticiones.
      */
     public void setRepeat(int repeat) {
-        this.repeat = repeat;
+        this.iRepeat = repeat;
     }
 
     /**
@@ -93,7 +90,7 @@ public class SoundClip implements Serializable {
      * repeticiones.
      */
     public int getRepeat() {
-        return repeat;
+        return iRepeat;
     }
 
     /**
@@ -172,10 +169,10 @@ public class SoundClip implements Serializable {
         clip.setFramePosition(0);
 
         //Reproduce el sonido con repeticion opcional.
-        if (looping) {
+        if (bLooping) {
             clip.loop(Clip.LOOP_CONTINUOUSLY);
         } else {
-            clip.loop(repeat);
+            clip.loop(iRepeat);
         }
     }
 
