@@ -528,6 +528,7 @@ public class Tetris extends JFrame implements Serializable {
         logicTimer.setCyclesPerSecond(gameSpeed);
         spawnPiece();
         souBackgroundB.play();
+        souBackgroundB.setLooping(true);
     }
 
     /**
