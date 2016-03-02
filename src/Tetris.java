@@ -455,10 +455,12 @@ public class Tetris extends JFrame implements Serializable {
                 currentRotation)) {
             //Increment the current row if it's safe to do so.
             currentRow++;
+            //AQUI CAMBIAR EL COLOR 
+            
         } else {
             /*
-                * We've either reached the bottom of the board, or landed on another piece, so
-		* we need to add the piece to the board.
+             * We've either reached the bottom of the board, or landed on another piece, so
+            * we need to add the piece to the board.
              */
             board.addPiece(currentType, currentCol, currentRow,
                     currentRotation);
