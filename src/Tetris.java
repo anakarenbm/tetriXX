@@ -11,7 +11,8 @@ import javax.swing.JFrame;
  * The {@code Tetris} class is responsible for handling much of the game logic
  * and reading user input.
  *
- * @author Brendan Jones
+ *  @authors Sergio Diaz          A01192313
+ *           Ana Karen Beltran    A01192508
  *
  */
 public class Tetris extends JFrame implements Serializable {

@@ -4,6 +4,8 @@
 /**
  * Clase SoundClip
  *
+ *  @authors Sergio Diaz          A01192313
+ *           Ana Karen Beltran    A01192508
  */
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.LineUnavailableException;

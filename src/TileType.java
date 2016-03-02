@@ -245,8 +245,12 @@ public enum TileType {
 	/**
 	 * The tiles for this piece. Each piece has an array of tiles for each rotation.
 	 */
-	private boolean[][] tiles;
+	private boolean[][] bMatTiles;
         
+        
+        /**
+	 * The type of a tile represented as an integer.
+	 */
         private int iType;
 	
 	/**
@@ -263,15 +267,12 @@ public enum TileType {
 		this.lightColor = color.brighter();
 		this.darkColor = color.darker();
 		this.iDimension = dimension;
-		this.tiles = tiles;
+		this.bMatTiles = tiles;
 		this.iCols = cols;
 		this.iRows = rows;
 		this.iType = iType;
 		this.iSpawnCol = 5 - (dimension >> 1);
 		this.iSpawnRow = getTopInset(0);
-                
-                
-                
 	}
 	
 	/**
@@ -323,8 +324,9 @@ public enum TileType {
 	}
 	
 	/**
-	 * Gets the number of rows in this piece. (Only valid when rotation is 0 or 2,
-	 * but it's fine since this is only used for the preview which uses rotation 0).
+	 * Gets the number of rows in this piece. (Only valid when rotation is 
+         *  0 or 2, but it's fine since this is only used for the preview which 
+         * uses rotation 0).
 	 * @return The number of rows.
 	 */
 	public int getRows() {
@@ -332,14 +334,21 @@ public enum TileType {
 	}
 	
 	/**
-	 * Gets the number of columns in this piece. (Only valid when rotation is 0 or 2,
-	 * but it's fine since this is only used for the preview which uses rotation 0).
+	 * Gets the number of columns in this piece. (Only valid when rotation 
+         * is 0 or 2, but it's fine since this is only used for the preview 
+         * which uses rotation 0).
 	 * @return The number of columns.
 	 */
 	public int getCols() {
 		return iCols;
 	}
 	
+        /**
+	 * Gets the type of tile of the tile. (Only valid when rotation 
+         * is 0 or 2, but it's fine since this is only used for the preview 
+         * which uses rotation 0).
+	 * @return The number of columns.
+	 */
         public int getType() {
 		return iType;
 	}
@@ -352,19 +361,19 @@ public enum TileType {
 	 * @return Whether or not a tile resides there.
 	 */
 	public boolean isTile(int x, int y, int rotation) {
-		return tiles[rotation][y * iDimension + x];
+		return bMatTiles[rotation][y * iDimension + x];
 	}
 	
 	/**
-	 * The left inset is represented by the number of empty columns on the left
-	 * side of the array for the given rotation.
+	 * The left inset is represented by the number of empty columns on the 
+         * left side of the array for the given rotation.
 	 * @param rotation The rotation.
 	 * @return The left inset.
 	 */
 	public int getLeftInset(int rotation) {
 		/*
-		 * Loop through from left to right until we find a tile then return
-		 * the column.
+		 * Loop through from left to right until we find a tile then 
+                 * return the column.
 		 */
 		for(int x = 0; x < iDimension; x++) {
 			for(int y = 0; y < iDimension; y++) {
@@ -377,15 +386,15 @@ public enum TileType {
 	}
 	
 	/**
-	 * The right inset is represented by the number of empty columns on the left
-	 * side of the array for the given rotation.
+	 * The right inset is represented by the number of empty columns on the 
+         * left side of the array for the given rotation.
 	 * @param rotation The rotation.
 	 * @return The right inset.
 	 */
 	public int getRightInset(int rotation) {
 		/*
-		 * Loop through from right to left until we find a tile then return
-		 * the column.
+		 * Loop through from right to left until we find a tile then 
+                 * return the column.
 		 */
 		for(int x = iDimension - 1; x >= 0; x--) {
 			for(int y = 0; y < iDimension; y++) {
@@ -405,7 +414,8 @@ public enum TileType {
 	 */
 	public int getTopInset(int rotation) {
 		/*
-		 * Loop through from top to bottom until we find a tile then return
+		 * Loop through from top to bottom until we find a tile then 
+                 * return
 		 * the row.
 		 */
 		for(int y = 0; y < iDimension; y++) {
@@ -419,15 +429,15 @@ public enum TileType {
 	}
 	
 	/**
-	 * The botom inset is represented by the number of empty rows on the bottom
-	 * side of the array for the given rotation.
+	 * The bottom inset is represented by the number of empty rows on the 
+         * bottom side of the array for the given rotation.
 	 * @param rotation The rotation.
 	 * @return The bottom inset.
 	 */
 	public int getBottomInset(int rotation) {
 		/*
-		 * Loop through from bottom to top until we find a tile then return
-		 * the row.
+		 * Loop through from bottom to top until we find a tile then 
+                 * return the row.
 		 */
 		for(int y = iDimension - 1; y >= 0; y--) {
 			for(int x = 0; x < iDimension; x++) {

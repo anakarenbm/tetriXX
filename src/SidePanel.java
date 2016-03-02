@@ -10,8 +10,8 @@ import javax.swing.JPanel;
 /**
  * The {@code SidePanel} class is responsible for displaying various information
  * on the game such as the next piece, the score and current level, and controls.
- * @author Brendan Jones
- *
+ * @authors Sergio Diaz          A01192313
+ *          Ana Karen Beltran    A01192508
  */
 public class SidePanel extends JPanel {
 	
