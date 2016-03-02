@@ -157,6 +157,11 @@ public class Tetris extends JFrame implements Serializable {
      * Counter clockwise turn Music.
      */
     private SoundClip souClick;
+    
+    /**
+     * Counter clockwise turn Music.
+     */
+    private int iCounterAddedPiece;
 
     /**
      * Creates a new Tetris instance. Sets up the window's properties, and adds
@@ -195,7 +200,13 @@ public class Tetris extends JFrame implements Serializable {
 		* Initialize File Name
          */
         nombreArchivo = "LoadFile.dat";//nombre del archivo
-
+        
+        /*
+	 * Initialize counters
+         */
+        
+        iCounterAddedPiece = 0;
+        
         /*
 		 * Adds a custom anonymous KeyListener to the frame.
          */
@@ -315,8 +326,9 @@ public class Tetris extends JFrame implements Serializable {
                      *       process of the game.
                      */
                     case KeyEvent.VK_G:
-                        try {
+                        try {                               
                             grabaArchivo();
+       
                         } catch (IOException ex) {
                             System.out.println("Error en " + ex.toString());
                         }
@@ -359,6 +371,15 @@ public class Tetris extends JFrame implements Serializable {
         this.random = new Random();
         this.isNewGame = true;
         this.gameSpeed = 1.0f;
+        
+        
+        
+        
+        
+       
+        
+        
+        
 
         /*
 	 * Setup the timer to keep the game from running before the user presses enter
@@ -371,6 +392,25 @@ public class Tetris extends JFrame implements Serializable {
             //Get the time that the frame started.
             long start = System.nanoTime();
 
+            
+            
+            System.out.println(iCounterAddedPiece);
+            
+            if (iCounterAddedPiece <= 50) {
+               
+                if (iCounterAddedPiece == 50) {
+                    
+                    iCounterAddedPiece = 0;
+                    board.isAdded(false);
+                }
+                
+            }
+            
+            iCounterAddedPiece ++;
+            
+            
+            
+            
             //Update the logic timer.
             logicTimer.update();
 
@@ -422,6 +462,9 @@ public class Tetris extends JFrame implements Serializable {
              */
             board.addPiece(currentType, currentCol, currentRow,
                     currentRotation);
+            
+            //added piece image
+            board.isAdded(true);
 
             /*
 		* Check to see if adding the new piece resulted in any cleared lines. If so,
@@ -431,6 +474,12 @@ public class Tetris extends JFrame implements Serializable {
             int cleared = board.checkLines();
             if (cleared > 0) {
                 score += 50 << cleared;
+                
+                //added clear image
+                
+                
+                
+                
             }
 
             /*
@@ -458,6 +507,8 @@ public class Tetris extends JFrame implements Serializable {
             * Spawn a new piece to control.
              */
             spawnPiece();
+            
+           
         }
     }
 

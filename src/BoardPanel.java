@@ -4,7 +4,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.ImageObserver;
 import java.io.Serializable;
+import java.net.URL;
 
 import javax.swing.JPanel;
 
@@ -110,6 +114,18 @@ public class BoardPanel extends JPanel implements Serializable  {
 	 */
 	public TileType[][] tiles;
 		
+        
+        /**
+	 * The tiles that make up the board.
+	 */
+	public boolean isAdded = false;
+        
+        /**
+	 * Image for is Added
+	 */
+	public Image imaAdded;
+        
+        
 	/**
 	 * Crates a new GameBoard instance.
 	 * @param tetris The Tetris instance to use.
@@ -282,6 +298,29 @@ public class BoardPanel extends JPanel implements Serializable  {
         return tiles[y][x];
     }
 
+    
+    	/**
+	 * Gets a boolean if a piece was added
+	 * 
+	 */
+    public boolean isAdded() {
+        
+        return isAdded;
+    }
+    
+    /**
+	 * Gets a boolean if a piece was added
+	 * 
+	 */
+    public void isAdded(boolean isAdded) {
+        
+         this.isAdded = isAdded;
+    }
+    
+    
+        
+        
+    
     public int[][] getState() {
         int State[][] = new int[tiles.length][tiles[0].length];
 
@@ -320,6 +359,24 @@ public class BoardPanel extends JPanel implements Serializable  {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        
+                URL urlImagenFondo = this.getClass().getResource("magic-kingdom.jpg");
+                imaAdded = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
+       
+                //added piece image
+
+                if (isAdded && !tetris.isGameOver() && !tetris.isPaused()) {
+   
+                   //paints an image for 1 second
+                   //g.drawImage(imaAdded, tetris.getPieceRow(), tetris.getPieceCol(), tetris);
+                   setBackground(tetris.getPieceType().getBaseColor());
+                   
+                }
+                
+                else {
+                    setBackground(Color.BLACK);
+                }
+                
 		
 		//This helps simplify the positioning of things.
 		g.translate(BORDER_WIDTH, BORDER_WIDTH);
