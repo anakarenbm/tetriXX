@@ -162,6 +162,12 @@ public class Tetris extends JFrame implements Serializable {
      * Counter clockwise turn Music.
      */
     private int iCounterAddedPiece;
+    
+    
+    /**
+     * Counter clockwise turn Music.
+     */
+    private SoundClip souLevelUp;
 
     /**
      * Creates a new Tetris instance. Sets up the window's properties, and adds
@@ -195,7 +201,8 @@ public class Tetris extends JFrame implements Serializable {
         souTurnCCW = new SoundClip("TurnCCW.wav");
         souTurnCW = new SoundClip("TurnCW.wav");
         souClick = new SoundClip("click.wav");
-
+        souLevelUp = new SoundClip("LevelUp.wav");
+        
         /*
 		* Initialize File Name
          */
@@ -222,7 +229,7 @@ public class Tetris extends JFrame implements Serializable {
                     * paused and that there is no drop cooldown, then set the
                     * logic timer to run at a speed of 25 cycles per second.
                      */
-                    case KeyEvent.VK_S:
+                    case KeyEvent.VK_DOWN:
                         if (!isPaused && dropCooldown == 0) {
                             logicTimer.setCyclesPerSecond(25.0f);
                         }
@@ -233,7 +240,7 @@ public class Tetris extends JFrame implements Serializable {
                     * not paused and that the position to the left of the current
                      * position is valid. If so, we decrement the current column by 1.
                      */
-                    case KeyEvent.VK_A:
+                    case KeyEvent.VK_LEFT:
                         if (!isPaused && board.isValidAndEmpty(currentType,
                                 currentCol - 1, currentRow, currentRotation)) {
                             currentCol--;
@@ -245,7 +252,7 @@ public class Tetris extends JFrame implements Serializable {
                     * not paused and that the position to the right of the current
                      * position is valid. If so, we increment the current column by 1.
                      */
-                    case KeyEvent.VK_D:
+                    case KeyEvent.VK_RIGHT:
                         if (!isPaused && board.isValidAndEmpty(currentType,
                                 currentCol + 1, currentRow, currentRotation)) {
                             currentCol++;
@@ -258,7 +265,7 @@ public class Tetris extends JFrame implements Serializable {
                      * complexity of the rotation code, as well as it's similarity to clockwise
                      * rotation, the code for rotating the piece is handled in another method.
                      */
-                    case KeyEvent.VK_Q:
+                    case KeyEvent.VK_Z:
                         if (!isPaused) {
                             rotatePiece((currentRotation == 0) ? 3
                                     : currentRotation - 1);
@@ -272,7 +279,7 @@ public class Tetris extends JFrame implements Serializable {
                      * complexity of the rotation code, as well as it's similarity to anticlockwise
                      * rotation, the code for rotating the piece is handled in another method.
                      */
-                    case KeyEvent.VK_E:
+                    case KeyEvent.VK_X:
                         if (!isPaused) {
                             rotatePiece((currentRotation == 3) ? 0
                                     : currentRotation + 1);
@@ -317,7 +324,7 @@ public class Tetris extends JFrame implements Serializable {
                      * back to whatever the current game speed is and clear out
                      * any cycles that might still be elapsed.
                      */
-                    case KeyEvent.VK_S:
+                    case KeyEvent.VK_DOWN:
                         logicTimer.setCyclesPerSecond(gameSpeed);
                         logicTimer.reset();
                         break;
@@ -465,11 +472,7 @@ public class Tetris extends JFrame implements Serializable {
             if (cleared > 0) {
                 score += 50 << cleared;
                 
-                //added clear image
-                
-                
-                
-                
+                souLevelUp.play();
             }
 
             /*
@@ -492,13 +495,12 @@ public class Tetris extends JFrame implements Serializable {
              * used in the "Level" string in the SidePanel.
              */
             level = (int) (gameSpeed * 1.70f);
-
+            
             /*
             * Spawn a new piece to control.
              */
             spawnPiece();
-            
-           
+ 
         }
     }
 

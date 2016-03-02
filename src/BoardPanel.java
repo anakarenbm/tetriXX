@@ -370,7 +370,6 @@ public class BoardPanel extends JPanel implements Serializable  {
                    //paints an image for 1 second
                    //g.drawImage(imaAdded, tetris.getPieceRow(), tetris.getPieceCol(), tetris);
                    setBackground(tetris.getPieceType().getBaseColor());
-                   
                 }
                 
                 else {
