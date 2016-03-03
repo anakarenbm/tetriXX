@@ -4,7 +4,7 @@ import java.awt.Color;
  * The {@code PieceType} enum describes the properties of the various pieces 
  *      that can be used in the game.
  * @authors Sergio Diaz          A01192313
- *         Ana Karen Beltran    A01192508
+ *         Ana Karen Beltran     A01192508
  *
  */
 public enum TileType {
@@ -243,7 +243,8 @@ public enum TileType {
 	public int iCols;
 	
 	/**
-	 * The tiles for this piece. Each piece has an array of tiles for each rotation.
+	 * The tiles for this piece. Each piece has an array of tiles for each 
+         * rotation.
 	 */
 	private boolean[][] bMatTiles;
         

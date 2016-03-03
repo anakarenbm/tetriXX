@@ -1,14 +1,8 @@
-
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.io.Serializable;
-import java.net.URL;
-
 import javax.swing.JPanel;
 
 /**
@@ -59,7 +53,8 @@ public class BoardPanel extends JPanel implements Serializable  {
 	/**
 	 * The total number of rows that the board contains.
 	 */
-	public static final int ROW_COUNT = VISIBLE_ROW_COUNT + HIDDEN_ROW_COUNT;
+	public static final int ROW_COUNT = VISIBLE_ROW_COUNT  
+                + HIDDEN_ROW_COUNT;
 	
 	/**
 	 * The number of pixels that a tile takes up.
@@ -96,12 +91,14 @@ public class BoardPanel extends JPanel implements Serializable  {
 	/**
 	 * The larger font to display.
 	 */
-	private static final Font LARGE_FONT = new Font("Tahoma", Font.BOLD, 16);
+	private static final Font LARGE_FONT = 
+                new Font("Tahoma", Font.BOLD, 16);
 
 	/**
 	 * The smaller font to display.
 	 */
-	private static final Font SMALL_FONT = new Font("Tahoma", Font.BOLD, 12);
+	private static final Font SMALL_FONT = 
+                new Font("Tahoma", Font.BOLD, 12);
 	
 	/**
 	 * The Tetris instance.
@@ -116,14 +113,10 @@ public class BoardPanel extends JPanel implements Serializable  {
         
         /**
 	 * The tiles that make up the board.
+         * the boolean is a flag so we can use the animations in the game 
 	 */
 	public boolean isAdded = false;
-        
-        /**
-	 * Image for is Added
-	 */
-	public Image imaAdded;
-        
+                
         
 	/**
 	 * Crates a new GameBoard instance.
@@ -176,14 +169,17 @@ public class BoardPanel extends JPanel implements Serializable  {
 		}
 		
 		/*
-		 * Loop through every tile in the piece and see if it conflicts with an existing tile.
+		 * Loop through every tile in the piece and see if it 
+                 * conflicts with an existing tile.
 		 * 
-		 * Note: It's fine to do this even though it allows for wrapping because we've already
+		 * Note: It's fine to do this even though it allows for wrapping 
+                 * because we've already
 		 * checked to make sure the piece is in a valid location.
 		 */
 		for(int col = 0; col < type.getDimension(); col++) {
 			for(int row = 0; row < type.getDimension(); row++) {
-				if(type.isTile(col, row, rotation) && isOccupied(x + col, y + row)) {
+				if(type.isTile(col, row, rotation) 
+                                        && isOccupied(x + col, y + row)) {
 					return false;
 				}
 			}
@@ -192,7 +188,8 @@ public class BoardPanel extends JPanel implements Serializable  {
 	}
 	
 	/**
-	 * Adds a piece to the game board. Note: Doesn't check for existing pieces,
+	 * Adds a piece to the game board. Note: Doesn't check for existing 
+         * pieces,
 	 * and will overwrite them if they exist.
 	 * @param type The type of piece to place.
 	 * @param x The x coordinate of the piece.
@@ -255,7 +252,8 @@ public class BoardPanel extends JPanel implements Serializable  {
 		}
 		
 		/*
-		 * Since the line is filled, we need to 'remove' it from the game.
+		 * Since the line is filled, we need to 'remove' it from the 
+                 * game.
 		 * To do this, we simply shift every row above it down by one.
 		 */
 		for(int row = line - 1; row >= 0; row--) {
@@ -308,18 +306,27 @@ public class BoardPanel extends JPanel implements Serializable  {
     }
     
     /**
-	 * Gets a boolean if a piece was added
-	 * 
-	 */
+     * @isAdded
+     * Gets a boolean if a piece was added
+     * 
+     * @param isAdded
+     */
     public void isAdded(boolean isAdded) {
         
          this.isAdded = isAdded;
     }
     
     
-        
-        
-    
+    /**
+     * @getMatrix
+     * 
+     * Scans the board to see which tiles are empty and which ones are occupied.
+     * We use this method so we can save and load the game successfully. 
+     * 
+     * @Parameter: none
+     * @retrun: State 
+     */    
+       
     public int[][] getMatrix() {
         int State[][] = new int[tiles.length][tiles[0].length];
 
@@ -335,6 +342,16 @@ public class BoardPanel extends JPanel implements Serializable  {
         }
         return State;
     }
+    
+    /**
+     * @setMatrix
+     * 
+     * We use this method so we can save and load the game successfully. 
+     * This setter is for the loading part specifically.
+     * 
+     * @Parameter: none
+     * @retrun: State 
+     */
     
     public void setMatrix(int[][] State){
             
@@ -359,15 +376,11 @@ public class BoardPanel extends JPanel implements Serializable  {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         
-                URL urlImagenFondo = this.getClass().getResource("magic-kingdom.jpg");
-                imaAdded = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
-       
                 //added piece image
-
                 if (isAdded && !tetris.isGameOver() && !tetris.isPaused()) {
    
-                   //paints an image for 1 second
-                   //g.drawImage(imaAdded, tetris.getPieceRow(), tetris.getPieceCol(), tetris);
+                   //paints the background of the upcoming piece for 1 second
+                   // when the latter sets on the board 
                    setBackground(tetris.getPieceType().getBaseColor());
                 }
                 
@@ -380,45 +393,57 @@ public class BoardPanel extends JPanel implements Serializable  {
 		g.translate(BORDER_WIDTH, BORDER_WIDTH);
 		
 		/*
-		 * Draw the board differently depending on the current game state.
+		 * Draw the board differently depending on the current game 
+                 * state.
 		 */
 		if(tetris.isPaused()) {
 			g.setFont(LARGE_FONT);
 			g.setColor(Color.WHITE);
 			String msg = "PAUSED";
-			g.drawString(msg, CENTER_X - g.getFontMetrics().stringWidth(msg) / 2, CENTER_Y);
+			g.drawString(msg, CENTER_X - g.getFontMetrics().
+                                stringWidth(msg) / 2, CENTER_Y);
 		} else if(tetris.isNewGame() || tetris.isGameOver()) {
 			g.setFont(LARGE_FONT);
 			g.setColor(Color.WHITE);
 			
 			/*
-			 * Because both the game over and new game screens are nearly identical,
-			 * we can handle them together and just use a ternary operator to change
+			 * Because both the game over and new game screens are 
+                         * nearly identical,
+			 * we can handle them together and just use a ternary 
+                         * operator to change
 			 * the messages that are displayed.
 			 */
-			String msg = tetris.isNewGame() ? "TETRIS" : "GAME OVER";
-			g.drawString(msg, CENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 150);
+			String msg = tetris.isNewGame() ? "TETRIS" : "GAMEOVER";
+			g.drawString(msg, CENTER_X 
+                                - g.getFontMetrics().stringWidth(msg) / 2, 150);
 			g.setFont(SMALL_FONT);
-			msg = "Press Enter to Play" + (tetris.isNewGame() ? "" : " Again");
-			g.drawString(msg, CENTER_X - g.getFontMetrics().stringWidth(msg) / 2, 300);
+			msg = "Press Enter to Play" 
+                                + (tetris.isNewGame() ? "" : " Again");
+			g.drawString(msg, CENTER_X 
+                                - g.getFontMetrics().stringWidth(msg) / 2, 300);
 		} else {
 			
 			/*
 			 * Draw the tiles onto the board.
 			 */
 			for(int x = 0; x < COL_COUNT; x++) {
-				for(int y = HIDDEN_ROW_COUNT; y < ROW_COUNT; y++) {
+				for(int y = HIDDEN_ROW_COUNT; y < ROW_COUNT; 
+                                        y++) {
 					TileType tile = getTile(x, y);
 					if(tile != null) {
-						drawTile(tile, x * TILE_SIZE, (y - HIDDEN_ROW_COUNT) * TILE_SIZE, g);
+						drawTile(tile, x * TILE_SIZE, 
+                                                (y - HIDDEN_ROW_COUNT) 
+                                                        * TILE_SIZE, g);
 					}
 				}
 			}
 			
 			/*
-			 * Draw the current piece. This cannot be drawn like the rest of the
-			 * pieces because it's still not part of the game board. If it were
-			 * part of the board, it would need to be removed every frame which
+			 * Draw the current piece. This cannot be drawn like the 
+                         * rest of the pieces because it's still not part of the 
+                         * game board. 
+			 * If it were part of the board, it would need to be 
+                         * removed every frame which
 			 * would just be slow and confusing.
 			 */
 			TileType type = tetris.getPieceType();
@@ -428,34 +453,53 @@ public class BoardPanel extends JPanel implements Serializable  {
 			
 			//Draw the piece onto the board.
 			for(int col = 0; col < type.getDimension(); col++) {
-				for(int row = 0; row < type.getDimension(); row++) {
-					if(pieceRow + row >= 2 && type.isTile(col, row, rotation)) {
-						drawTile(type, (pieceCol + col) * TILE_SIZE, (pieceRow + row - HIDDEN_ROW_COUNT) * TILE_SIZE, g);
+				for(int row = 0; row < type.getDimension(); 
+                                        row++) {
+					if(pieceRow + row >= 2 && 
+                                                type.isTile(col, row, rotation)) 
+                                        {
+						drawTile(type, (pieceCol + col) 
+                                                * TILE_SIZE, (pieceRow + row - 
+                                                HIDDEN_ROW_COUNT) 
+                                                        * TILE_SIZE, g);
 					}
 				}
 			}
 			
 			/*
-			 * Draw the ghost (semi-transparent piece that shows where the current piece will land). I couldn't think of
-			 * a better way to implement this so it'll have to do for now. We simply take the current position and move
+			 * Draw the ghost (semi-transparent piece that shows 
+                         * where the current piece will land). I couldn't think 
+                         * of a better way to implement this so it'll have to do
+                         * for now. We simply take the current position and move
 			 * down until we hit a row that would cause a collision.
 			 */
 			Color base = type.getBaseColor();
-			base = new Color(base.getRed(), base.getGreen(), base.getBlue(), 20);
-			for(int lowest = pieceRow; lowest < ROW_COUNT; lowest++) {
+			base = new Color(base.getRed(), base.getGreen(), 
+                                base.getBlue(), 20);
+			for(int lowest = pieceRow; lowest < ROW_COUNT; 
+                                lowest++) {
 				//If no collision is detected, try the next row.
-				if(isValidAndEmpty(type, pieceCol, lowest, rotation)) {					
+				if(isValidAndEmpty(type, pieceCol, 
+                                        lowest, rotation)) {					
 					continue;
 				}
 				
-				//Draw the ghost one row higher than the one the collision took place at.
+				//Draw the ghost one row higher than the one the 
+                                //collision took place at.
 				lowest--;
 				
 				//Draw the ghost piece.
-				for(int col = 0; col < type.getDimension(); col++) {
-					for(int row = 0; row < type.getDimension(); row++) {
-						if(lowest + row >= 2 && type.isTile(col, row, rotation)) {
-							drawTile(base, base.brighter(), base.darker(), (pieceCol + col) * TILE_SIZE, (lowest + row - HIDDEN_ROW_COUNT) * TILE_SIZE, g);
+				for(int col = 0; col < type.getDimension(); 
+                                        col++) {
+                                    for(int row = 0; row < 
+                                        type.getDimension(); row++) {
+						
+                                        if(lowest + row >= 2 && 
+                                            type.isTile(col, row, rotation)) {
+                                            drawTile(base, base.brighter(), 
+                                            base.darker(),(pieceCol + col) * 
+                                            TILE_SIZE, (lowest + row - 
+                                            HIDDEN_ROW_COUNT) * TILE_SIZE, g);
 						}
 					}
 				}
@@ -464,14 +508,18 @@ public class BoardPanel extends JPanel implements Serializable  {
 			}
 			
 			/*
-			 * Draw the background grid above the pieces (serves as a useful visual
-			 * for players, and makes the pieces look nicer by breaking them up.
+			 * Draw the background grid above the pieces (serves 
+                         * as a useful visual for players, and makes the pieces 
+                         * look nicer by breaking them up.
 			 */
 			g.setColor(Color.DARK_GRAY);
 			for(int x = 0; x < COL_COUNT; x++) {
 				for(int y = 0; y < VISIBLE_ROW_COUNT; y++) {
-					g.drawLine(0, y * TILE_SIZE, COL_COUNT * TILE_SIZE, y * TILE_SIZE);
-					g.drawLine(x * TILE_SIZE, 0, x * TILE_SIZE, VISIBLE_ROW_COUNT * TILE_SIZE);
+					g.drawLine(0, y * TILE_SIZE, COL_COUNT 
+                                        * TILE_SIZE, y * TILE_SIZE);
+					g.drawLine(x * TILE_SIZE, 0, x 
+                                        * TILE_SIZE, VISIBLE_ROW_COUNT 
+                                        * TILE_SIZE);
 				}
 			}
 		}
@@ -480,7 +528,8 @@ public class BoardPanel extends JPanel implements Serializable  {
 		 * Draw the outline.
 		 */
 		g.setColor(Color.WHITE);
-		g.drawRect(0, 0, TILE_SIZE * COL_COUNT, TILE_SIZE * VISIBLE_ROW_COUNT);
+		g.drawRect(0, 0, TILE_SIZE * COL_COUNT, TILE_SIZE 
+                        * VISIBLE_ROW_COUNT);
 	}
 	
 	/**
@@ -491,7 +540,8 @@ public class BoardPanel extends JPanel implements Serializable  {
 	 * @param g The graphics object.
 	 */
 	private void drawTile(TileType type, int x, int y, Graphics g) {
-		drawTile(type.getBaseColor(), type.getLightColor(), type.getDarkColor(), x, y, g);
+		drawTile(type.getBaseColor(), type.getLightColor(), 
+                        type.getDarkColor(), x, y, g);
 	}
 	
 	/**
@@ -503,7 +553,8 @@ public class BoardPanel extends JPanel implements Serializable  {
 	 * @param y The row.
 	 * @param g The graphics object.
 	 */
-	private void drawTile(Color base, Color light, Color dark, int x, int y, Graphics g) {
+	private void drawTile(Color base, Color light, Color dark, int x, 
+                int y, Graphics g) {
 		
 		/*
 		 * Fill the entire tile with the base color.
@@ -512,16 +563,20 @@ public class BoardPanel extends JPanel implements Serializable  {
 		g.fillRect(x, y, TILE_SIZE, TILE_SIZE);
 		
 		/*
-		 * Fill the bottom and right edges of the tile with the dark shading color.
+		 * Fill the bottom and right edges of the tile with the dark 
+                 * shading color.
 		 */
 		g.setColor(dark);
-		g.fillRect(x, y + TILE_SIZE - SHADE_WIDTH, TILE_SIZE, SHADE_WIDTH);
-		g.fillRect(x + TILE_SIZE - SHADE_WIDTH, y, SHADE_WIDTH, TILE_SIZE);
+		g.fillRect(x, y + TILE_SIZE - SHADE_WIDTH, TILE_SIZE, 
+                        SHADE_WIDTH);
+		g.fillRect(x + TILE_SIZE - SHADE_WIDTH, y, SHADE_WIDTH, 
+                        TILE_SIZE);
 		
 		/*
-		 * Fill the top and left edges with the light shading. We draw a single line
-		 * for each row or column rather than a rectangle so that we can draw a nice
-		 * looking diagonal where the light and dark shading meet.
+		 * Fill the top and left edges with the light shading. We draw a 
+                 * single line for each row or column rather than a rectangle so 
+                 * that we can draw a nice looking diagonal where the light and 
+                 * dark shading meet.
 		 */
 		g.setColor(light);
 		for(int i = 0; i < SHADE_WIDTH; i++) {
@@ -529,5 +584,4 @@ public class BoardPanel extends JPanel implements Serializable  {
 			g.drawLine(x + i, y, x + i, y + TILE_SIZE - i - 1);
 		}
 	}
-
 }
