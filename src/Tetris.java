@@ -1,3 +1,4 @@
+
 import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -11,8 +12,7 @@ import javax.swing.JFrame;
  * The {@code Tetris} class is responsible for handling much of the game logic
  * and reading user input.
  *
- *  @authors Sergio Diaz          A01192313
- *           Ana Karen Beltran    A01192508
+ * @authors Sergio Diaz A01192313 Ana Karen Beltran A01192508
  *
  */
 public class Tetris extends JFrame implements Serializable {
@@ -138,13 +138,12 @@ public class Tetris extends JFrame implements Serializable {
      * Counter clockwise turn Music.
      */
     private SoundClip souClick;
-    
+
     /**
      * Counter clockwise turn Music.
      */
     private int iCounterAddedPiece;
-    
-    
+
     /**
      * Counter clockwise turn Music.
      */
@@ -183,17 +182,17 @@ public class Tetris extends JFrame implements Serializable {
         souTurnCW = new SoundClip("audio/TurnCW.wav");
         souClick = new SoundClip("audio/click.wav");
         souLevelUp = new SoundClip("audio/LevelUp.wav");
-        
+
         /*
 	 * Initialize File Name
          */
         nombreArchivo = "LoadFile.dat";//nombre del archivo
-        
+
         /*
 	 * Initialize counter
          */
         iCounterAddedPiece = 0;
-        
+
         /*
 		 * Adds a custom anonymous KeyListener to the frame.
          */
@@ -228,10 +227,11 @@ public class Tetris extends JFrame implements Serializable {
                         }
                         break;
 
-                    /*
-                    * Move Right - When pressed, we check to see that the game is
-                    * not paused and that the position to the right of the current
-                     * position is valid. If so, we increment the current column by 1.
+                    /**
+                     * Move Right. When pressed, we check to see that the game
+                     * is not paused and that the position to the right of the
+                     * current position is valid. If so, we increment the
+                     * current column by 1.
                      */
                     case KeyEvent.VK_RIGHT:
                         if (!isPaused && board.isValidAndEmpty(currentType,
@@ -285,13 +285,11 @@ public class Tetris extends JFrame implements Serializable {
                         if (!isGameOver && !isNewGame) {
                             isPaused = !isPaused;
                             logicTimer.setPaused(isPaused);
-                            
+
                             if (isPaused) {
                                 souBackgroundB.stop();
-                            }
-                            
-                            else {
-                             
+                            } else {
+
                                 souBackgroundB.play();
                             }
                         }
@@ -330,9 +328,9 @@ public class Tetris extends JFrame implements Serializable {
                      *       process of the game.
                      */
                     case KeyEvent.VK_G:
-                        try {                               
+                        try {
                             grabaArchivo();
-       
+
                         } catch (IOException ex) {
                             System.out.println("Error en " + ex.toString());
                         }
@@ -356,9 +354,9 @@ public class Tetris extends JFrame implements Serializable {
 
         });
 
-        /*
-	 * Here we resize the frame to hold the BoardPanel and SidePanel instances,
-	 * center the window on the screen, and show it to the user.
+        /**
+         * Here we resize the frame to hold the BoardPanel and SidePanel
+         * instances center the window on the screen, and show it to the user.
          */
         pack();
         setLocationRelativeTo(null);
@@ -369,20 +367,18 @@ public class Tetris extends JFrame implements Serializable {
      * Starts the game running. Initializes everything and enters the game loop.
      */
     private void startGame() {
-      /**
-        * Initialize our random number generator, logic timer, and new game 
-        *variables.
-        */
-                
+        /**
+         * Initialize our random number generator, logic timer, and new game
+         * variables.
+         */
+
         this.random = new Random();
         this.isNewGame = true;
         this.gameSpeed = 1.0f;
-        
-        
-       /**
-	 * Setup the timer to keep the game from running before the user 
-         * presses enter
-	 * to start it.
+
+        /**
+         * Setup the timer to keep the game from running before the user presses
+         * enter to start it.
          */
         this.logicTimer = new Clock(gameSpeed);
         logicTimer.setPaused(true);
@@ -390,22 +386,19 @@ public class Tetris extends JFrame implements Serializable {
         while (true) {
             //Get the time that the frame started.
             long start = System.nanoTime();
-            
+
             if (iCounterAddedPiece <= 50) {
-               
+
                 if (iCounterAddedPiece == 50) {
-                    
+
                     iCounterAddedPiece = 0;
                     board.isAdded(false);
                 }
-                
+
             }
-            
-            iCounterAddedPiece ++;
-            
-            
-            
-            
+
+            iCounterAddedPiece++;
+
             //Update the logic timer.
             logicTimer.update();
 
@@ -443,64 +436,65 @@ public class Tetris extends JFrame implements Serializable {
      * Updates the game and handles the bulk of it's logic.
      */
     private void updateGame() {
-        /*
-            * Check to see if the piece's position can move down to the next row.
+        /**
+         * Check to see if the piece's position can move down to the next row.
          */
         if (board.isValidAndEmpty(currentType, currentCol, currentRow + 1,
                 currentRotation)) {
             //Increment the current row if it's safe to do so.
             currentRow++;
             //AQUI CAMBIAR EL COLOR 
-            
+
         } else {
-            /*
-             * We've either reached the bottom of the board, or landed on another piece, so
-            * we need to add the piece to the board.
+            /**
+             * We've either reached the bottom of the board, or landed on
+             * another piece, so we need to add the piece to the board.
              */
             board.addPiece(currentType, currentCol, currentRow,
                     currentRotation);
-            
+
             //added piece image
             board.isAdded(true);
 
-            /*
-		* Check to see if adding the new piece resulted in any cleared lines. If so,
-		* increase the player's score. (Up to 4 lines can be cleared in a single go;
-		* [1 = 100pts, 2 = 200pts, 3 = 400pts, 4 = 800pts]).
+            /**
+             * Check to see if adding the new piece resulted in any cleared
+             * lines. If so,increase the player's score. (Up to 4 lines can be
+             * cleared in a single go; [1 = 100pts, 2 = 200pts, 3 = 400pts, 4 =
+             * 800pts]).
              */
             int cleared = board.checkLines();
             if (cleared > 0) {
                 score += 50 << cleared;
-                
+
                 souLevelUp.play();
             }
 
-            /*
-            * Increase the speed slightly for the next piece and update the game's timer
-             * to reflect the increase.
+            /**
+             * Increase the speed slightly for the next piece and update the
+             * game's timer to reflect the increase.
              */
             gameSpeed += 0.035f;
             logicTimer.setCyclesPerSecond(gameSpeed);
             logicTimer.reset();
 
-            /*
-            * Set the drop cooldown so the next piece doesn't automatically come flying
-             * in from the heavens immediately after this piece hits if we've not reacted
-             * yet. (~0.5 second buffer).
+            /**
+             * Set the drop cooldown so the next piece doesn't automatically
+             * come flying in from the heavens immediately after this piece hits
+             * if we've not reacted yet. (~0.5 second buffer).
              */
             dropCooldown = 25;
 
-            /*
-             * Update the difficulty level. This has no effect on the game, and is only
-             * used in the "Level" string in the SidePanel.
+            /**
+             * Update the difficulty level. This has no effect on the game, and
+             * is only used in the "Level" string in the SidePanel.
              */
             level = (int) (gameSpeed * 1.70f);
-            
+
             /*
             * Spawn a new piece to control.
              */
             spawnPiece();
- 
+
         }
     }
 
@@ -536,9 +530,10 @@ public class Tetris extends JFrame implements Serializable {
      * values.
      */
     private void spawnPiece() {
-        /*
-         * Poll the last piece and reset our position and rotation to
-         * their default variables, then pick the next piece to use.
+        
+        /**
+         * Poll the last piece and reset our position and rotation to their
+         * default variables, then pick the next piece to use.
          */
         this.currentType = nextType;
         this.currentCol = currentType.getSpawnColumn();
@@ -547,9 +542,10 @@ public class Tetris extends JFrame implements Serializable {
         this.nextType = TileType.values()[random.nextInt(TYPE_COUNT)];
         souClick.play();
 
-        /*
-            * If the spawn point is invalid, we need to pause the game and flag that we've lost
-             * because it means that the pieces on the board have gotten too high.
+        /**
+         * If the spawn point is invalid, we need to pause the game and flag
+         * that we've lost because it means that the pieces on the board have
+         * gotten too high.
          */
         if (!board.isValidAndEmpty(currentType, currentCol, currentRow,
                 currentRotation)) {
@@ -566,29 +562,29 @@ public class Tetris extends JFrame implements Serializable {
      * @param newRotation The rotation of the new peice.
      */
     private void rotatePiece(int newRotation) {
-      /**
-        * Sometimes pieces will need to be moved when rotated to avoid clipping
-        * out of the board (the I piece is a good example of this). Here we 
-        * store temporary row and column in case we need to move the tile as 
-        * well.
-        */
+        /**
+         * Sometimes pieces will need to be moved when rotated to avoid clipping
+         * out of the board (the I piece is a good example of this). Here we
+         * store temporary row and column in case we need to move the tile as
+         * well.
+         */
         int newColumn = currentCol;
         int newRow = currentRow;
 
-       /**
-        * Get the insets for each of the sides. These are used to determine how
-        * many empty rows or columns there are on a given side.
-        */
+        /**
+         * Get the insets for each of the sides. These are used to determine how
+         * many empty rows or columns there are on a given side.
+         */
         int left = currentType.getLeftInset(newRotation);
         int right = currentType.getRightInset(newRotation);
         int top = currentType.getTopInset(newRotation);
         int bottom = currentType.getBottomInset(newRotation);
 
-       /**
-        * If the current piece is too far to the left or right, move the piece away from the edges
-        * so that the piece doesn't clip out of the map and automatically become invalid.
-        */
-       
+        /**
+         * If the current piece is too far to the left or right, move the piece
+         * away from the edges so that the piece doesn't clip out of the map and
+         * automatically become invalid.
+         */
         if (currentCol < -left) {
             newColumn -= currentCol - left;
         } else if (currentCol + currentType.getDimension() - right
@@ -597,11 +593,11 @@ public class Tetris extends JFrame implements Serializable {
                     - BoardPanel.COL_COUNT + 1;
         }
 
-      /**	 
-        * If the current piece is too far to the top or bottom, move the piece away from the edges
-        * so that the piece doesn't clip out of the map and automatically become invalid.
-        */
-      
+        /**
+         * If the current piece is too far to the top or bottom, move the piece
+         * away from the edges so that the piece doesn't clip out of the map and
+         * automatically become invalid.
+         */
         if (currentRow < -top) {
             newRow -= currentRow - top;
         } else if (currentRow + currentType.getDimension() - bottom
@@ -610,13 +606,12 @@ public class Tetris extends JFrame implements Serializable {
                     - BoardPanel.ROW_COUNT + 1;
         }
 
-       /**
-        * Check to see if the new position is acceptable. If it is, 
-        *update the rotation and    
-        * position of the piece.
-        */
-       
-        if (board.isValidAndEmpty(currentType, newColumn, newRow, newRotation)) {
+        /**
+         * Check to see if the new position is acceptable. If it is, update the
+         * rotation and position of the piece.
+         */
+        if (board.isValidAndEmpty(currentType, newColumn, newRow, newRotation)) 
+                {
             currentRotation = newRotation;
             currentRow = newRow;
             currentCol = newColumn;
@@ -719,9 +714,8 @@ public class Tetris extends JFrame implements Serializable {
      * @throws IOException
      */
     public void leeArchivo() throws IOException {
-        RandomAccessFile finArchivo = new 
-                                       RandomAccessFile(nombreArchivo , "rw");
-        
+        RandomAccessFile finArchivo = new RandomAccessFile(nombreArchivo, "rw");
+
         this.level = finArchivo.readInt();
         this.score = finArchivo.readInt();
         this.currentCol = finArchivo.readInt();
@@ -746,9 +740,9 @@ public class Tetris extends JFrame implements Serializable {
             }
         }
         board.clear();
-            board.setMatrix(matBoard); 
+        board.setMatrix(matBoard);
         finArchivo.close();
-        
+
     }
 
     /**
@@ -758,8 +752,8 @@ public class Tetris extends JFrame implements Serializable {
      */
     public void grabaArchivo() throws IOException {
 
-        RandomAccessFile fpwArchivo = new RandomAccessFile(nombreArchivo, "rw"); 
-        
+        RandomAccessFile fpwArchivo = new RandomAccessFile(nombreArchivo, "rw");
+
         fpwArchivo.writeInt(level);
         fpwArchivo.writeInt(score);
         fpwArchivo.writeInt(currentCol);
@@ -770,21 +764,20 @@ public class Tetris extends JFrame implements Serializable {
         fpwArchivo.writeFloat(gameSpeed);
         fpwArchivo.writeBoolean(isGameOver);
         fpwArchivo.writeBoolean(isNewGame);
-        
-        
+
         int matStatus[][] = board.getMatrix();
-            
-            fpwArchivo.writeInt(matStatus.length);
-            fpwArchivo.writeInt(matStatus[0].length);
-            for(int iR = 0; iR < matStatus.length; iR++){
-                for(int iC = 0; iC < matStatus[0].length; iC++){
-                    fpwArchivo.writeInt (matStatus[iR][iC]);
-                }
-            }   
+
+        fpwArchivo.writeInt(matStatus.length);
+        fpwArchivo.writeInt(matStatus[0].length);
+        for (int iR = 0; iR < matStatus.length; iR++) {
+            for (int iC = 0; iC < matStatus[0].length; iC++) {
+                fpwArchivo.writeInt(matStatus[iR][iC]);
+            }
+        }
 
         fpwArchivo.close();
     }
-    
+
     /**
      * Entry-point of the game. Responsible for creating and starting a new game
      * instance.
