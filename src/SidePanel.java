@@ -141,6 +141,24 @@ public class SidePanel extends JPanel {
         /*
 	 * Draw the "Controls" category.
          */
+        drawControls(g, offset);
+
+        /*
+	 * Draw the next piece preview box.
+         */
+        g.setFont(LARGE_FONT);
+        g.drawString("Next Piece:", SMALL_INSET, 70);
+        g.drawRect(SQUARE_CENTER_X - SQUARE_SIZE, SQUARE_CENTER_Y - SQUARE_SIZE,
+                SQUARE_SIZE * 2, SQUARE_SIZE * 2);
+        
+        /*Draws the next tile on the pannel*/
+        drawNextTile(g);
+    }
+    
+    /*
+    * Draw the "Controls" category.
+    */
+    public void drawControls(Graphics g, int offset){
         g.setFont(LARGE_FONT);
         g.drawString("Controls", SMALL_INSET, offset = CONTROLS_INSET);
         g.setFont(SMALL_FONT);
@@ -156,20 +174,15 @@ public class SidePanel extends JPanel {
         g.drawString("P - Pause Game", LARGE_INSET, offset += TEXT_STRIDE);
         g.drawString("C - Load Game", LARGE_INSET, offset += TEXT_STRIDE);
         g.drawString("G - Save Game", LARGE_INSET, offset += TEXT_STRIDE);
-
-        /*
-	 * Draw the next piece preview box.
-         */
-        g.setFont(LARGE_FONT);
-        g.drawString("Next Piece:", SMALL_INSET, 70);
-        g.drawRect(SQUARE_CENTER_X - SQUARE_SIZE, SQUARE_CENTER_Y - SQUARE_SIZE,
-                SQUARE_SIZE * 2, SQUARE_SIZE * 2);
-
-        /*
-	 * Draw a preview of the next piece that will be spawned. The code is 
-         *pretty much identical to the drawing code on the board, just smaller 
-        * and centered, rather than constrained to a grid.
-         */
+    }
+    
+    
+    /*
+    * Draw a preview of the next piece that will be spawned. The code is 
+    * pretty much identical to the drawing code on the board, just smaller 
+    * and centered, rather than constrained to a grid.
+    */
+    public void drawNextTile(Graphics g) {
         TileType type = tetris.getNextPieceType();
         if (!tetris.isGameOver() && type != null) {
             /*
@@ -198,7 +211,7 @@ public class SidePanel extends JPanel {
             for (int row = 0; row < dimension; row++) {
                 for (int col = 0; col < dimension; col++) {
                     if (type.isTile(col, row, 0)) {
-                        drawTile(type, startX + ((col - left) * TILE_SIZE), 
+                        drawTile(type, startX + ((col - left) * TILE_SIZE),
                                 startY + ((row - top) * TILE_SIZE), g);
                     }
                 }
