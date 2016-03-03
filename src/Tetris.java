@@ -178,21 +178,20 @@ public class Tetris extends JFrame implements Serializable {
         /*
 		* Initialize Sound Clips 
          */
-        souBackgroundB = new SoundClip("BackgroundB.wav");
-        souTurnCCW = new SoundClip("TurnCCW.wav");
-        souTurnCW = new SoundClip("TurnCW.wav");
-        souClick = new SoundClip("click.wav");
-        souLevelUp = new SoundClip("LevelUp.wav");
+        souBackgroundB = new SoundClip("audio/BackgroundB.wav");
+        souTurnCCW = new SoundClip("audio/TurnCCW.wav");
+        souTurnCW = new SoundClip("audio/TurnCW.wav");
+        souClick = new SoundClip("audio/click.wav");
+        souLevelUp = new SoundClip("audio/LevelUp.wav");
         
         /*
-		* Initialize File Name
+	 * Initialize File Name
          */
         nombreArchivo = "LoadFile.dat";//nombre del archivo
         
         /*
-	 * Initialize counters
+	 * Initialize counter
          */
-        
         iCounterAddedPiece = 0;
         
         /*
@@ -217,9 +216,10 @@ public class Tetris extends JFrame implements Serializable {
                         break;
 
                     /*
-                     * Move Left - When pressed, we check to see that the game is
-                    * not paused and that the position to the left of the current
-                     * position is valid. If so, we decrement the current column by 1.
+                     * Move Left - When pressed, we check to see that the game 
+                     * is not paused and that the position to the left of the 
+                     * current position is valid. If so, we decrement 
+                     * the current column by 1.
                      */
                     case KeyEvent.VK_LEFT:
                         if (!isPaused && board.isValidAndEmpty(currentType,
@@ -241,10 +241,12 @@ public class Tetris extends JFrame implements Serializable {
                         break;
 
                     /*
-                     * Rotate Anticlockwise - When pressed, check to see that the game is not paused
-                     * and then attempt to rotate the piece anticlockwise. Because of the size and
-                     * complexity of the rotation code, as well as it's similarity to clockwise
-                     * rotation, the code for rotating the piece is handled in another method.
+                     * Rotate Anticlockwise - When pressed, check to see that 
+                     * the game is not paused and then attempt to rotate the 
+                     * piece anticlockwise. Because of the size and
+                     * complexity of the rotation code, as well as it's 
+                     * similarity to clockwise rotation, the code for rotating 
+                     * the piece is handled in another method.
                      */
                     case KeyEvent.VK_Z:
                         if (!isPaused) {
@@ -255,10 +257,12 @@ public class Tetris extends JFrame implements Serializable {
                         break;
 
                     /*
-                    * Rotate Clockwise - When pressed, check to see that the game is not paused
-                     * and then attempt to rotate the piece clockwise. Because of the size and
-                     * complexity of the rotation code, as well as it's similarity to anticlockwise
-                     * rotation, the code for rotating the piece is handled in another method.
+                     * Rotate Clockwise - When pressed, check to see that the 
+                     * game is not paused and then attempt to rotate the piece 
+                     * clockwise. Because of the size and complexity of the
+                     * rotation code, as well as it's similarity to 
+                     * anticlockwise rotation, the code for rotating the piece
+                     * is handled in another method.
                      */
                     case KeyEvent.VK_X:
                         if (!isPaused) {
@@ -269,21 +273,33 @@ public class Tetris extends JFrame implements Serializable {
                         break;
 
                     /*
-                    * Pause Game - When pressed, check to see that we're currently playing a game.
-                     * If so, toggle the pause variable and update the logic timer to reflect this
-                     * change, otherwise the game will execute a huge number of updates and essentially
-                     * cause an instant game over when we unpause if we stay paused for more than a
+                     * Pause Game - When pressed, check to see that we're 
+                     * currently playing a game. If so, toggle the pause 
+                     *variable and update the logic timer to reflect this
+                     * change, otherwise the game will execute a huge number of 
+                     * updates and essentially cause an instant game over when 
+                     * we unpause if we stay paused for more than a
                      * minute or so.
                      */
                     case KeyEvent.VK_P:
                         if (!isGameOver && !isNewGame) {
                             isPaused = !isPaused;
                             logicTimer.setPaused(isPaused);
+                            
+                            if (isPaused) {
+                                souBackgroundB.stop();
+                            }
+                            
+                            else {
+                             
+                                souBackgroundB.play();
+                            }
                         }
                         break;
 
                     /*
-                    * Start Game - When pressed, check to see that we're in either a game over or new
+                     * Start Game - When pressed, check to see that we're in 
+                     *either a game over or new
                      * game state. If so, reset the game.
                      */
                     case KeyEvent.VK_ENTER:
@@ -353,16 +369,19 @@ public class Tetris extends JFrame implements Serializable {
      * Starts the game running. Initializes everything and enters the game loop.
      */
     private void startGame() {
-        /*
-        * Initialize our random number generator, logic timer, and new game variables.
-         */
+      /**
+        * Initialize our random number generator, logic timer, and new game 
+        *variables.
+        */
+                
         this.random = new Random();
         this.isNewGame = true;
         this.gameSpeed = 1.0f;
         
         
-        /*
-	 * Setup the timer to keep the game from running before the user presses enter
+       /**
+	 * Setup the timer to keep the game from running before the user 
+         * presses enter
 	 * to start it.
          */
         this.logicTimer = new Clock(gameSpeed);
@@ -547,27 +566,29 @@ public class Tetris extends JFrame implements Serializable {
      * @param newRotation The rotation of the new peice.
      */
     private void rotatePiece(int newRotation) {
-        /*
-		 * Sometimes pieces will need to be moved when rotated to avoid clipping
-		 * out of the board (the I piece is a good example of this). Here we store
-		 * a temporary row and column in case we need to move the tile as well.
-         */
+      /**
+        * Sometimes pieces will need to be moved when rotated to avoid clipping
+        * out of the board (the I piece is a good example of this). Here we 
+        * store temporary row and column in case we need to move the tile as 
+        * well.
+        */
         int newColumn = currentCol;
         int newRow = currentRow;
 
-        /*
-		 * Get the insets for each of the sides. These are used to determine how
-		 * many empty rows or columns there are on a given side.
-         */
+       /**
+        * Get the insets for each of the sides. These are used to determine how
+        * many empty rows or columns there are on a given side.
+        */
         int left = currentType.getLeftInset(newRotation);
         int right = currentType.getRightInset(newRotation);
         int top = currentType.getTopInset(newRotation);
         int bottom = currentType.getBottomInset(newRotation);
 
-        /*
-		 * If the current piece is too far to the left or right, move the piece away from the edges
-		 * so that the piece doesn't clip out of the map and automatically become invalid.
-         */
+       /**
+        * If the current piece is too far to the left or right, move the piece away from the edges
+        * so that the piece doesn't clip out of the map and automatically become invalid.
+        */
+       
         if (currentCol < -left) {
             newColumn -= currentCol - left;
         } else if (currentCol + currentType.getDimension() - right
@@ -576,10 +597,11 @@ public class Tetris extends JFrame implements Serializable {
                     - BoardPanel.COL_COUNT + 1;
         }
 
-        /*
-		 * If the current piece is too far to the top or bottom, move the piece away from the edges
-		 * so that the piece doesn't clip out of the map and automatically become invalid.
-         */
+      /**	 
+        * If the current piece is too far to the top or bottom, move the piece away from the edges
+        * so that the piece doesn't clip out of the map and automatically become invalid.
+        */
+      
         if (currentRow < -top) {
             newRow -= currentRow - top;
         } else if (currentRow + currentType.getDimension() - bottom
@@ -588,10 +610,12 @@ public class Tetris extends JFrame implements Serializable {
                     - BoardPanel.ROW_COUNT + 1;
         }
 
-        /*
-		 * Check to see if the new position is acceptable. If it is, update the rotation and
-		 * position of the piece.
-         */
+       /**
+        * Check to see if the new position is acceptable. If it is, 
+        *update the rotation and    
+        * position of the piece.
+        */
+       
         if (board.isValidAndEmpty(currentType, newColumn, newRow, newRotation)) {
             currentRotation = newRotation;
             currentRow = newRow;
@@ -734,8 +758,7 @@ public class Tetris extends JFrame implements Serializable {
      */
     public void grabaArchivo() throws IOException {
 
-        RandomAccessFile fpwArchivo = new 
-                                       RandomAccessFile(nombreArchivo , "rw"); 
+        RandomAccessFile fpwArchivo = new RandomAccessFile(nombreArchivo, "rw"); 
         
         fpwArchivo.writeInt(level);
         fpwArchivo.writeInt(score);
